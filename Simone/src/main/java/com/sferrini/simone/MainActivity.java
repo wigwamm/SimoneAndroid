@@ -154,7 +154,12 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
                 } else {
                     isPerfect = false;
                     fm.setBackground(borderRed);
-                    message.setText("The phone is no straight");
+                    if (values[1] > 1) {
+                        message.setText("Rotate the phone left");
+                    } else if (values[1] < 1) {
+                        message.setText("Rotate the phone right");
+                    }
+
                 }
             }
         }
