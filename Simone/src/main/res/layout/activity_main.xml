@@ -4,10 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
 
     tools:context="com.sferrini.simone.MainActivity
 
@@ -25,53 +21,6 @@
 
     </LinearLayout>
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Orientation"
-            android:id="@+id/textView" />
-
-
-    <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="X Value"
-            android:id="@+id/xbox"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="45dp"
-            android:layout_below="@+id/textView" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Y Value"
-            android:id="@+id/ybox"
-            android:layout_below="@+id/xbox"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Z Value"
-            android:id="@+id/zbox"
-            android:layout_below="@+id/ybox"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Message"
-        android:id="@+id/textView2"
-        android:layout_below="@+id/zbox"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="41dp"
-        android:layout_alignRight="@+id/zbox"
-        android:layout_alignEnd="@+id/zbox"
-        android:gravity="center_horizontal" />
-
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -84,7 +33,61 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true">
 
-        </FrameLayout>
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/takeButton"
+            android:layout_gravity="right|center_vertical"
+            android:src="@drawable/shutteron"
+            android:layout_margin="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Message"
+            android:id="@+id/message"
+            android:layout_below="@+id/zbox"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="41dp"
+            android:layout_alignRight="@+id/zbox"
+            android:layout_alignEnd="@+id/zbox"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal|bottom"
+            android:textColor="#ffffff"
+            android:shadowColor="#000000"
+            android:phoneNumber="false"
+            android:singleLine="false"
+            android:paddingBottom="5dp"/>
+    </FrameLayout>
+
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="X Value"
+            android:id="@+id/xbox"
+            android:layout_marginTop="45dp"
+            android:paddingLeft="15dp"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Y Value"
+            android:id="@+id/ybox"
+            android:layout_below="@+id/xbox"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:paddingLeft="15dp"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Z Value"
+            android:id="@+id/zbox"
+            android:layout_below="@+id/ybox"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:paddingLeft="15dp"/>
 
 
 </RelativeLayout>
