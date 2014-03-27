@@ -11,6 +11,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -35,6 +36,8 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
     private SurfaceHolder surfaceHolder;
     //-----
 
+    //SoundManager for shutter
+    SoundManager soundManager;
 
     final String tag = "AccLogger";
 
@@ -66,7 +69,6 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(this);
 
-
         // get reference to SensorManager
         sm = (SensorManager) getSystemService(SENSOR_SERVICE);
 
@@ -76,12 +78,15 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
 
         message = (TextView) findViewById(R.id.message);
 
+        soundManager.init(MainActivity.this);
+
         ImageView icona=(ImageView)findViewById(R.id.takeButton);
         icona.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isPerfect) {
                     camera.takePicture(null, null, after_photo);
+                    soundManager.play();
                 }
             }
         });
@@ -109,7 +114,8 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
             String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
             File miaCartella = new File(root + "/SimonePhotos");
             miaCartella.mkdirs();
-            String nomeFoto = "photo";
+
+            String nomeFoto = "lastPhoto";
             File file = new File(miaCartella,nomeFoto+".jpg");
             if (file.exists ()) file.delete ();
             try {
@@ -117,6 +123,11 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
                 FileOutputStream out = new FileOutputStream(file);
                 Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length, null);
                 bmp.compress(Bitmap.CompressFormat.JPEG, 90, out);
+
+                //Save in media
+                MediaStore.Images.Media.insertImage(getContentResolver(), bmp, "photoSimone" , "SimonePhotos");
+
+
                 out.write(data,0,data.length);
                 out.flush();
                 out.close();
@@ -167,17 +178,16 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        //Log Accuracy
         Log.d(tag, "onAccuracyChanged: " + sensor + ", accuracy: " + accuracy);
     }
     @Override
     protected void onResume() {
         super.onResume();
-        Sensor Accel = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        Sensor Orient = sm.getDefaultSensor(Sensor.TYPE_ORIENTATION);
 
+        Sensor Accelerometer = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         // register this class as a listener for the orientation and accelerometer sensors
-        sm.registerListener(this, Accel, SensorManager.SENSOR_DELAY_FASTEST);
-        sm.registerListener(this, Orient, SensorManager.SENSOR_DELAY_FASTEST);
+        sm.registerListener(this, Accelerometer, SensorManager.SENSOR_DELAY_FASTEST);
     }
     @Override
     protected void onStop() {
