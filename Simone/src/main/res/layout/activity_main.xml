@@ -36,7 +36,6 @@
             android:layout_height="60dp"
             android:id="@+id/takeButton"
             android:layout_gravity="right|center_vertical"
-            android:src="@drawable/shutteron"
             android:layout_margin="10dp"/>
 
         <TextView

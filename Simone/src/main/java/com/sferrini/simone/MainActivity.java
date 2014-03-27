@@ -35,6 +35,7 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
     static private SurfaceView surfaceView;
     private SurfaceHolder surfaceHolder;
     ImageView flash;
+    ImageView shutter;
     //-----
 
     //SoundManager for shutter
@@ -72,8 +73,8 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
 
         soundManager.init(MainActivity.this);
 
-        ImageView icona = (ImageView)findViewById(R.id.takeButton);
-        icona.setOnClickListener(new View.OnClickListener() {
+        shutter = (ImageView)findViewById(R.id.takeButton);
+        shutter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isPerfect) {
@@ -154,9 +155,11 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
                     isPerfect = true;
                     message.setText("");
                     fm.setBackground(borderGreen);
+                    shutter.setImageResource(R.drawable.shutteron);
                 } else {
                     isPerfect = false;
                     fm.setBackground(borderRed);
+                    shutter.setImageResource(R.drawable.shutteroff);
 
                     //Rotate
                     if (values[1] > 1) {
