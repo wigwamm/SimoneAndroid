@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -143,7 +142,7 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
         float [] values = event.values;
         synchronized (this) {
             //Log.d(tag, "onSensorChanged: " + sensor + ", x: " + values[0] + ", y: " + values[1] + ", z: " + values[2]);
-            //Log.d(tag," x: " + values[0] + ", y: " + values[1] + ", z: " + values[2]);
+            //Log.d(tag, " x: " + values[0] + ", y: " + values[1] + ", z: " + values[2]);
 
             if (sensor.getType() == Sensor.TYPE_ACCELEROMETER ) {
 
@@ -151,17 +150,28 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
                 Drawable borderGreen = getResources().getDrawable(R.drawable.border );
                 Drawable borderRed = getResources().getDrawable(R.drawable.border_red );
 
-                if (values[1] > -1 && values[1] < 1) {
+                if ((values[1] > -1 && values[1] < 1) && (values[2] > -2 && values[2] < 2)) {
                     isPerfect = true;
                     message.setText("");
                     fm.setBackground(borderGreen);
                 } else {
                     isPerfect = false;
                     fm.setBackground(borderRed);
+
+                    //Rotate
                     if (values[1] > 1) {
                         message.setText("Rotate the phone left");
-                    } else if (values[1] < 1) {
+                    }
+                    if (values[1] < 1) {
                         message.setText("Rotate the phone right");
+                    }
+
+                    //Tilt
+                    if (values[2] > 2) {
+                        message.setText("Tilt the phone back");
+                    }
+                    if (values[2] < -2) {
+                        message.setText("Tilt the phone forwards");
                     }
                 }
             }
