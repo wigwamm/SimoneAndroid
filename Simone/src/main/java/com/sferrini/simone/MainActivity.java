@@ -2,6 +2,7 @@ package com.sferrini.simone;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
@@ -34,32 +35,28 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
     private Camera camera;
     static private SurfaceView surfaceView;
     private SurfaceHolder surfaceHolder;
+    ImageView flash;
     //-----
 
     //SoundManager for shutter
     SoundManager soundManager;
-
-    final String tag = "AccLogger";
+    //-----
 
     //Sensor
     SensorManager sm = null;
-
     Boolean isPerfect;
-
     TextView message = null;
+    //-----
 
-    TextView xAccView = null;
-    TextView yAccView = null;
-    TextView zAccView = null;
+    final String tag = "AccLogger";
 
     FrameLayout fm = null;
+
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
 
         getWindow().setFormat(PixelFormat.TRANSLUCENT);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -72,19 +69,17 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
         // get reference to SensorManager
         sm = (SensorManager) getSystemService(SENSOR_SERVICE);
 
-        xAccView = (TextView) findViewById(R.id.xbox);
-        yAccView = (TextView) findViewById(R.id.ybox);
-        zAccView = (TextView) findViewById(R.id.zbox);
-
         message = (TextView) findViewById(R.id.message);
 
         soundManager.init(MainActivity.this);
 
-        ImageView icona=(ImageView)findViewById(R.id.takeButton);
+        ImageView icona = (ImageView)findViewById(R.id.takeButton);
         icona.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isPerfect) {
+                    flash = (ImageView)findViewById(R.id.flash);
+                    flash.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
                     camera.takePicture(null, null, after_photo);
                     soundManager.play();
                 }
@@ -110,6 +105,8 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
 
         public void onPictureTaken(byte[] data, Camera camera) {
 
+            flash.setBackgroundColor(Color.parseColor("#00000000"));
+
             //salviamo la foto
             String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
             File miaCartella = new File(root + "/SimonePhotos");
@@ -127,7 +124,6 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
                 //Save in media
                 MediaStore.Images.Media.insertImage(getContentResolver(), bmp, "photoSimone" , "SimonePhotos");
 
-
                 out.write(data,0,data.length);
                 out.flush();
                 out.close();
@@ -135,12 +131,11 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        	//la preview della camera si blocca quando scattiamo una foto, va fatta ripartire
+        	//Have to restart the camera
             camera.startPreview();
         }
     };
     //------
-
 
     //Sensor
     public void onSensorChanged(SensorEvent event) {
@@ -148,11 +143,9 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
         float [] values = event.values;
         synchronized (this) {
             //Log.d(tag, "onSensorChanged: " + sensor + ", x: " + values[0] + ", y: " + values[1] + ", z: " + values[2]);
+            //Log.d(tag," x: " + values[0] + ", y: " + values[1] + ", z: " + values[2]);
 
             if (sensor.getType() == Sensor.TYPE_ACCELEROMETER ) {
-                xAccView.setText("Sway: " + values[0]);
-                yAccView.setText("Surge: " + values[1]);
-                zAccView.setText("Heave: " + values[2]);
 
                 fm = (FrameLayout)findViewById(R.id.FrameLayout1);
                 Drawable borderGreen = getResources().getDrawable(R.drawable.border );
@@ -170,7 +163,6 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
                     } else if (values[1] < 1) {
                         message.setText("Rotate the phone right");
                     }
-
                 }
             }
         }
@@ -179,15 +171,13 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         //Log Accuracy
-        Log.d(tag, "onAccuracyChanged: " + sensor + ", accuracy: " + accuracy);
+        //Log.d(tag, "onAccuracyChanged: " + sensor + ", accuracy: " + accuracy);
     }
     @Override
     protected void onResume() {
         super.onResume();
-
         Sensor Accelerometer = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        // register this class as a listener for the orientation and accelerometer sensors
-        sm.registerListener(this, Accelerometer, SensorManager.SENSOR_DELAY_FASTEST);
+        sm.registerListener(this, Accelerometer, SensorManager.SENSOR_DELAY_UI); //SENSOR_DELAY_FASTEST
     }
     @Override
     protected void onStop() {
