@@ -11,7 +11,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.view.SurfaceHolder;
@@ -23,8 +22,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 //public class MainActivity extends ActionBarActivity implements SensorEventListener {
@@ -35,7 +32,11 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
     static private SurfaceView surfaceView;
     private SurfaceHolder surfaceHolder;
     ImageView flash;
+    ImageView shutter;
     //-----
+
+    Bitmap bmp;
+    //------
 
     //SoundManager for shutter
     SoundManager soundManager;
@@ -72,13 +73,15 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
 
         soundManager.init(MainActivity.this);
 
-        ImageView icona = (ImageView)findViewById(R.id.takeButton);
-        icona.setOnClickListener(new View.OnClickListener() {
+        shutter = (ImageView)findViewById(R.id.takeButton);
+        shutter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isPerfect) {
                     flash = (ImageView)findViewById(R.id.flash);
                     flash.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                    message.setVisibility(View.INVISIBLE);
+                    shutter.setVisibility(View.INVISIBLE);
                     camera.takePicture(null, null, after_photo);
                     soundManager.play();
                 }
@@ -94,9 +97,10 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
         camera.release();
     }
     public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3) {
-        try{
+        try {
             camera.setPreviewDisplay(arg0);
-            camera.startPreview();}
+            camera.startPreview();
+        }
         catch (IOException e){}
     }
 
@@ -106,26 +110,17 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
 
             flash.setBackgroundColor(Color.parseColor("#00000000"));
 
-            //salviamo la foto
-            String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
-            File miaCartella = new File(root + "/SimonePhotos");
-            miaCartella.mkdirs();
-
-            String nomeFoto = "lastPhoto";
-            File file = new File(miaCartella,nomeFoto+".jpg");
-            if (file.exists ()) file.delete ();
+            //Save picture
             try {
-                file.createNewFile();
-                FileOutputStream out = new FileOutputStream(file);
-                Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length, null);
-                bmp.compress(Bitmap.CompressFormat.JPEG, 90, out);
-
                 //Save in media
-                MediaStore.Images.Media.insertImage(getContentResolver(), bmp, "photoSimone" , "SimonePhotos");
+                bmp = BitmapFactory.decodeByteArray(data, 0, data.length, null);
+                //bmp.compress(Bitmap.CompressFormat.JPEG, 90, out);
 
-                out.write(data,0,data.length);
-                out.flush();
-                out.close();
+                MediaStore.Images.Media.insertImage(getContentResolver(), bmp, "photoSimone" , "SimonePhotos");
+                bmp = null;
+
+                shutter.setVisibility(View.VISIBLE);
+                message.setVisibility(View.VISIBLE);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -153,10 +148,13 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
                 if ((values[1] > -1 && values[1] < 1) && (values[2] > -2 && values[2] < 2)) {
                     isPerfect = true;
                     message.setText("");
+                    message.setVisibility(View.INVISIBLE);
+
                     fm.setBackground(borderGreen);
                 } else {
                     isPerfect = false;
                     fm.setBackground(borderRed);
+                    message.setVisibility(View.VISIBLE);
 
                     //Rotate
                     if (values[1] > 1) {
