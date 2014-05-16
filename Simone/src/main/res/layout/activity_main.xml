@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sferrini.simone.MainActivity
-
-    ">
+    tools:context="com.sferrini.simone.MainActivity">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
@@ -32,39 +30,25 @@
         android:layout_alignParentBottom="true">
 
         <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:id="@+id/takeButton"
-            android:layout_gravity="right|center_vertical"
-            android:layout_margin="10dp"/>
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/takeButton"/>
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Message"
+            android:text="@string/user_message"
             android:id="@+id/message"
-            android:layout_below="@+id/zbox"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="41dp"
-            android:layout_alignRight="@+id/zbox"
-            android:layout_alignEnd="@+id/zbox"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             android:layout_gravity="center_horizontal|bottom"
             android:textColor="#ffffff"
             android:shadowColor="#000000"
-            android:phoneNumber="false"
-            android:singleLine="false"
+            android:background="@drawable/round"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
             android:paddingBottom="5dp"/>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/preview"
-            android:layout_margin="20dp"
-            android:layout_gravity="center_horizontal|bottom" />
-
     </FrameLayout>
 
     <ImageView
@@ -73,28 +57,5 @@
         android:id="@+id/flash"
         android:layout_alignParentBottom="true"
         android:background="@drawable/flash"/>
-
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/retake"
-        android:layout_gravity="left|bottom"
-        android:layout_marginLeft="150dp"
-        android:layout_marginBottom="30dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:background="@drawable/retake"/>
-
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/save"
-        android:layout_gravity="right|bottom"
-        android:layout_marginRight="150dp"
-        android:layout_marginBottom="30dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/save"/>
 
 </RelativeLayout>

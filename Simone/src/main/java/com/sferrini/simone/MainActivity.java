@@ -35,10 +35,6 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
     ImageView shutter;
     //-----
 
-    //Preview
-    ImageView preview;
-    ImageView retake;
-    ImageView save;
     Bitmap bmp;
     //------
 
@@ -77,40 +73,6 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
 
         soundManager.init(MainActivity.this);
 
-        //Preview
-        preview = (ImageView)findViewById(R.id.preview);
-        retake = (ImageView)findViewById(R.id.retake);
-        save = (ImageView)findViewById(R.id.save);
-
-        retake.setVisibility(View.INVISIBLE);
-        save.setVisibility(View.INVISIBLE);
-
-        retake.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                retake.setVisibility(View.INVISIBLE);
-                save.setVisibility(View.INVISIBLE);
-                preview.setImageBitmap(null);
-                shutter.setVisibility(View.VISIBLE);
-                message.setVisibility(View.VISIBLE);
-                bmp = null;
-            }
-        });
-
-        save.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 retake.setVisibility(View.INVISIBLE);
-                 save.setVisibility(View.INVISIBLE);
-                 preview.setImageBitmap(null);
-                 shutter.setVisibility(View.VISIBLE);
-                 message.setVisibility(View.VISIBLE);
-                 //Save in media
-                 MediaStore.Images.Media.insertImage(getContentResolver(), bmp, "photoSimone" , "SimonePhotos");
-                 bmp = null;
-             }
-        });
-
         shutter = (ImageView)findViewById(R.id.takeButton);
         shutter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,9 +97,10 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
         camera.release();
     }
     public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3) {
-        try{
+        try {
             camera.setPreviewDisplay(arg0);
-            camera.startPreview();}
+            camera.startPreview();
+        }
         catch (IOException e){}
     }
 
@@ -149,16 +112,15 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
 
             //Save picture
             try {
+                //Save in media
                 bmp = BitmapFactory.decodeByteArray(data, 0, data.length, null);
                 //bmp.compress(Bitmap.CompressFormat.JPEG, 90, out);
 
-                //Save in media
-                //MediaStore.Images.Media.insertImage(getContentResolver(), bmp, "photoSimone" , "SimonePhotos");
+                MediaStore.Images.Media.insertImage(getContentResolver(), bmp, "photoSimone" , "SimonePhotos");
+                bmp = null;
 
-                preview.setImageBitmap(bmp);
-
-                retake.setVisibility(View.VISIBLE);
-                save.setVisibility(View.VISIBLE);
+                shutter.setVisibility(View.VISIBLE);
+                message.setVisibility(View.VISIBLE);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -186,12 +148,13 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
                 if ((values[1] > -1 && values[1] < 1) && (values[2] > -2 && values[2] < 2)) {
                     isPerfect = true;
                     message.setText("");
+                    message.setVisibility(View.INVISIBLE);
+
                     fm.setBackground(borderGreen);
-                    shutter.setImageResource(R.drawable.shutteron);
                 } else {
                     isPerfect = false;
                     fm.setBackground(borderRed);
-                    shutter.setImageResource(R.drawable.shutteroff);
+                    message.setVisibility(View.VISIBLE);
 
                     //Rotate
                     if (values[1] > 1) {
