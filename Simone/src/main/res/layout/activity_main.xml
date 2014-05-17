@@ -42,20 +42,86 @@
             android:id="@+id/message"
             android:gravity="center"
             android:layout_gravity="center_horizontal|bottom"
-            android:textColor="#ffffff"
+            android:textColor="#ffd1d1d1"
             android:shadowColor="#000000"
             android:background="@drawable/round"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="5dp"
-            android:paddingBottom="5dp"/>
+            android:paddingBottom="5dp"
+            android:layout_marginBottom="5dp"/>
+
     </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="15dp"
+        android:background="@drawable/info"
+        android:id="@+id/info">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Tap the screen when green"
+            android:textColor="#ffa2a2a2"
+            android:id="@+id/titlePopup"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal|top"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="The border goes green when the \nangle and the lighting is right"
+            android:textColor="#ff828282"
+            android:id="@+id/instructionPopup"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center_horizontal|top"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Tips:"
+            android:textColor="#ffa2a2a2"
+            android:id="@+id/tipsPopup"
+            android:layout_marginTop="95dp"
+            android:layout_gravity="center_horizontal|top"
+            android:gravity="center" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="1. Shoot from waist height\n2. Pictures are saved in your gallery"
+            android:textColor="#ff828282"
+            android:id="@+id/tipsInstructionPopup"
+            android:layout_marginTop="130dp"
+            android:layout_gravity="center_horizontal|top" />
+
+    </FrameLayout>
+
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:id="@+id/infoButton"
+        android:src="@drawable/infoicon"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="false"
+        android:layout_margin="15dp"/>
 
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/flash"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/flash"/>
+        android:background="@drawable/flash"
+        android:layout_gravity="center_horizontal|top" />
 
 </RelativeLayout>
