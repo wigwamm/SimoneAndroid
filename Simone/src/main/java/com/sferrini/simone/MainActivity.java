@@ -48,6 +48,10 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
     TextView message = null;
     //-----
 
+    //Info
+    FrameLayout infoPopup;
+    ImageView infoButton;
+
     final String tag = "AccLogger";
 
     FrameLayout fm = null;
@@ -85,6 +89,24 @@ public class MainActivity extends ActionBarActivity implements SurfaceHolder.Cal
                     camera.takePicture(null, null, after_photo);
                     soundManager.play();
                 }
+            }
+        });
+
+        // PopUp
+        infoPopup = (FrameLayout)findViewById(R.id.info);
+        infoPopup.setVisibility(View.INVISIBLE);
+        infoPopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                infoPopup.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        infoButton = (ImageView)findViewById(R.id.infoButton);
+        infoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                infoPopup.setVisibility(View.VISIBLE);
             }
         });
     }
